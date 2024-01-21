@@ -18,7 +18,8 @@ const salesOrderRouter = require('./routes/salesOrder');
 var app = express();
 
 app.use(cors({
-  origin: "https://deploy-preview-3--guileless-kangaroo-9838ad.netlify.app",
+  // origin: "https://deploy-preview-3--guileless-kangaroo-9838ad.netlify.app",
+  origin:"*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
