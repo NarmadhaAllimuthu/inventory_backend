@@ -53,6 +53,12 @@ const salesOrderSchema = new mongoose.Schema({
     salesOrderDate :{
         type: String,
         required: true
+    },  status: {
+        type: Boolean,
+        default: true,
+      },created_at: { 
+        type: Date, 
+        default: Date.now 
     }
 })
 

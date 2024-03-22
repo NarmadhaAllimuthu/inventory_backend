@@ -7,6 +7,15 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 
+var app = express();
+// "https://deploy-preview-3--guileless-kangaroo-9838ad.netlify.app",
+app.use(cors({
+  origin: "http://localhost:3000",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+}));
+
 var indexRouter = require('./routes/index');
 var userCreationRouter = require('./routes/user-creation');
 const supplierRouter = require('./routes/supplier');
@@ -14,15 +23,11 @@ const inventoryProductRouter = require('./routes/inventoryProduct');
 const purchaseOrderRouter = require('./routes/purchaseOrder');
 const customerRouter = require('./routes/customer');
 const salesOrderRouter = require('./routes/salesOrder');
+const paymentRouter = require('./routes/payment');
 
-var app = express();
 
-app.use(cors({
-  origin: "https://deploy-preview-3--guileless-kangaroo-9838ad.netlify.app",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true,
-  optionsSuccessStatus: 204,
-}));
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -41,6 +46,7 @@ app.use('/inventoryProduct', inventoryProductRouter);
 app.use('/purchaseOrder', purchaseOrderRouter);
 app.use("/customer",customerRouter);
 app.use("/salesOrder",salesOrderRouter);
+app.use("/payment", paymentRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

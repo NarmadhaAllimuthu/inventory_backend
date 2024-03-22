@@ -5,7 +5,8 @@ const { userRegister } = require('../models/registerModels');
 const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
 dotenv.config();
-const auth = require("../authorization")
+const auth = require("../authorization");
+const nodemailer = require('nodemailer');
 
 const jwt = require('jsonwebtoken');
 const { token } = require('morgan');
@@ -20,6 +21,8 @@ router.get('/', function (req, res, next) {
 router.post('/register', async function (req, res, next) {
 
   try {
+    console.log(req.body);
+    console.log("register entered");
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(req.body.password, salt);
     const hashConfirmPassword = await bcrypt.hash(req.body.confirmPassword, salt);
@@ -53,7 +56,7 @@ router.post('/register', async function (req, res, next) {
     }
   } catch (error) {
     console.log("Error", error);
-    res.json({ message: "Something went wrong" });
+    res.json({ message: "Something went wrong",errorOccured:error });
   }
 
 });
@@ -140,14 +143,48 @@ router.get("/userData", auth, async (req, res) => {
 })
 
 
-
+ 
 router.get("/forgetPassword/checkEmail/:id",async(req,res)=>{
   try {
+    // console.log(req.params.id);
     const user = await userRegister.findOne({emailId:req.params.id});
+   
+    // console.log(user);
     if(!user){
       res.status(404).json({message:"User not found"})
     }else{
-      res.status(200).json(user);
+
+      const link = `http://localhost:3000/resetPassword/${user._id}`;
+
+      const transporter = nodemailer.createTransport({
+        service :"gmail",
+        auth:{
+          user : process.env.EMAIL,
+          pass : process.env.PASSWORD
+        }
+      })
+
+      const sendMail = async()=>{
+        await transporter.sendMail({
+          from : process.env.EMAIL,
+          to : user.emailId,
+          subject : "Reset Password",
+          text : "Reset Your Password by using the mail linked",
+          html : `<a href=${link} style={{color:"blue"}}>Click Here : ${link}</a> to reset your password`
+        })
+      }
+    
+sendMail()
+.then(()=>{
+  console.log("Email sent successfully");
+  res.status(200).json({message:"mail has been send to reset the password "});
+})
+.catch((err)=>{
+  console.log("Error", err);
+  res.status(500).json({error:"Internal Server Error"});
+});
+
+     
     }
   } catch (error) {
     console.error("Error", error);
@@ -156,6 +193,7 @@ router.get("/forgetPassword/checkEmail/:id",async(req,res)=>{
   
 
 })
+
 
 
 router.put("/forgetPassword/resetPassword/:id",async(req,res)=>{
@@ -184,6 +222,47 @@ router.put("/forgetPassword/resetPassword/:id",async(req,res)=>{
 
 
 })
+
+
+
+// router.get("/data",async(req,res)=>{
+//   try{
+//     let sort = req.query.sort;
+//     if(sort === "asc"){
+//       sort = 1;
+//     }else{
+//       sort = -1;
+//     }
+//     const user = await userRegister.find().sort({userFirstName:sort});
+//     res.status(200).json(user);
+//   }catch(error){
+//     console.error("Error", error);
+//         res.status(500).json({ error: "Internal Server Error" });
+//   }
+// })
+
+
+
+router.get("/data",async(req,res)=>{
+    try{
+      let page = parseInt(req.query.page) || 1;
+      let perpage = 2;
+      let skip = (page - 1) * perpage;
+      let sort = req.query.sort;
+      if(sort === "asc"){
+        sort = 1;
+      }
+      else{
+        sort = -1;
+      }
+ 
+      const user = await userRegister.find({},{userFirstName:1}).sort({userFirstName:sort}).skip(skip).limit(perpage);
+      res.status(200).json(user);
+    }catch(error){
+      console.error("Error", error);
+          res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
 
 
 
