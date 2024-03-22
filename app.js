@@ -28,6 +28,16 @@ const paymentRouter = require('./routes/payment');
 
 
 
+<<<<<<< HEAD
+=======
+app.use(cors({
+  // origin: "https://deploy-preview-3--guileless-kangaroo-9838ad.netlify.app",
+  origin:"*",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+}));
+>>>>>>> 8a3040dd03244bc064f410ce66f52771748677aa
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
