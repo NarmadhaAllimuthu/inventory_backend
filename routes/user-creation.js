@@ -56,11 +56,8 @@ router.post('/register', async function (req, res, next) {
     }
   } catch (error) {
     console.log("Error", error);
-<<<<<<< HEAD
     res.json({ message: "Something went wrong",errorOccured:error });
-=======
     res.json({ message: "Something went wrong", error:error });
->>>>>>> 8a3040dd03244bc064f410ce66f52771748677aa
   }
 
 });
