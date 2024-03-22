@@ -10,7 +10,7 @@ const dotenv = require('dotenv').config();
 var app = express();
 // "https://deploy-preview-3--guileless-kangaroo-9838ad.netlify.app",
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
