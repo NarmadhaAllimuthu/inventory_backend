@@ -23,7 +23,7 @@ const inventoryProductRouter = require('./routes/inventoryProduct');
 const purchaseOrderRouter = require('./routes/purchaseOrder');
 const customerRouter = require('./routes/customer');
 const salesOrderRouter = require('./routes/salesOrder');
-const paymentRouter = require('./routes/payment');
+// const paymentRouter = require('./routes/payment');
 
 
 
@@ -53,7 +53,7 @@ app.use('/inventoryProduct', inventoryProductRouter);
 app.use('/purchaseOrder', purchaseOrderRouter);
 app.use("/customer",customerRouter);
 app.use("/salesOrder",salesOrderRouter);
-app.use("/payment", paymentRouter);
+// app.use("/payment", paymentRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
