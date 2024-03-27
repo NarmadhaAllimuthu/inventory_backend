@@ -9,12 +9,12 @@ const dotenv = require('dotenv').config();
 
 var app = express();
 // "https://deploy-preview-3--guileless-kangaroo-9838ad.netlify.app",
-app.use(cors({
-  origin: "http://localhost:3000",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true,
-  optionsSuccessStatus: 204,
-}));
+// app.use(cors({
+//   origin: "http://localhost:3000",
+//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//   credentials: true,
+//   optionsSuccessStatus: 204,
+// }));
 
 var indexRouter = require('./routes/index');
 var userCreationRouter = require('./routes/user-creation');
